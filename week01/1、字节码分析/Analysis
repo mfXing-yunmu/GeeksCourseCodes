@@ -1,0 +1,83 @@
+Compiled from "Hello.java"
+public class Hello {
+  public Hello();
+    Code:
+       0: aload_0                           // 加载局部变量表第 1 个局部变量压入操作数栈
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V 调用父类 Object 类的初始化方法，从常量池拿到标号为 1 的常量，这里是"<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: bipush        6                   // 将常量 6 压入操作数栈（当 int 取值 -128~127 时，JVM 采用 bipush 指令将常量压入栈中）
+       2: istore_1                          // 将 6 从操作数栈写入到局部变量表，存入第 2 个局部变量
+       3: bipush        8                   // 将常量 8 压入操作数栈
+       5: istore_2                          // 将 8 从操作数栈写入到局部变量表，存入第 3 个局部变量
+       6: iconst_0                          // 将常量 0 压入操作数栈（当 int 取值 -1~5 时，JVM 采用 iconst 指令将常量压入栈中）
+       7: istore_3                          // 将 0 从操作数栈写入到局部变量表，存入第 4 个局部变量
+       8: iload_3                           // 加载局部变量表第 4 个局部变量 0 压入操作数栈
+       9: iload_2                           // 加载局部变量表第 3 个局部变量 8 压入操作数栈
+      10: if_icmpge     27                  // 执行比较第 8 和第 9 行，如果 第 8 行 >= 第 9 行 则跳转 27 行继续执行指令
+      13: iload_1                           // 加载局部变量表第 2 个局部变量 6 压入操作数栈
+      14: iload_2                           // 加载局部变量表第 3 个局部变量 8 压入操作数栈
+      15: if_icmpge     21                  // 执行比较第 13 和第 14 行，如果 第 13 行 >= 第 14 行 则跳转 21 行继续执行指令
+      18: iinc          1, 1                // 把常量值 1 加到 int 类型的第 2 个局部变量 6 上（对应代码 numA++;）
+      21: iinc          3, 1                // 把常量值 1 加到 int 类型的第 4 个局部变量 0 上（对应代码 for 循环中的 i++）
+      24: goto          8                   // 跳转到第 8 行（循环最开始的地方）继续执行指令
+      27: iload_1                           // 加载局部变量表第 2 个局部变量 8 压入操作数栈
+      28: iload_2                           // 加载局部变量表第 3 个局部变量 8 压入操作数栈
+      29: iadd                              // 执行 int 类型的加法
+      30: istore_3                          // 将 16 从操作数栈写入到局部变量表，存入第 4 个局部变量
+      31: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream; 调用类 PrintStream 的静态方法
+      34: new           #3                  // class java/lang/StringBuilder 从常量池拿到标号为 3 的常量，这里是 java/lang/StringBuilder (可用 -verbose 关键字进行查看：javap -c -verbose Hello)
+      37: dup                               // 复制栈顶数值并将复制值压入栈顶
+      38: invokespecial #4                  // Method java/lang/StringBuilder."<init>":()V 调用 StringBuilder 的构造函数
+      41: ldc           #5                  // String resultPlus = （变量相加的和 =）
+      43: invokevirtual #6                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder; 执行 StringBuilder 的 append 方法
+      46: iload_3                           // 加载局部变量表第 4 个局部变量 16 压入操作数栈
+      47: invokevirtual #7                  // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder; 执行 StringBuilder 的 append 方法
+      50: invokevirtual #8                  // Method java/lang/StringBuilder.toString:()Ljava/lang/String; 调用 StringBuilder 的 toString() 方法
+      53: invokevirtual #9                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V 执行 PrintStream 的静态方法 println
+      56: iload_1
+      57: iload_2
+      58: isub                              // 执行 int 类型的减法（同加法分析过程）
+      59: istore        4
+      61: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+      64: new           #3                  // class java/lang/StringBuilder
+      67: dup
+      68: invokespecial #4                  // Method java/lang/StringBuilder."<init>":()V
+      71: ldc           #10                 // String resultSubtract =
+      73: invokevirtual #6                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      76: iload         4
+      78: invokevirtual #7                  // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+      81: invokevirtual #8                  // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+      84: invokevirtual #9                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+      87: iload_1
+      88: iload_2
+      89: imul                              // 执行 int 类型的乘法（同加法分析过程）
+      90: istore        5
+      92: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+      95: new           #3                  // class java/lang/StringBuilder
+      98: dup
+      99: invokespecial #4                  // Method java/lang/StringBuilder."<init>":()V
+     102: ldc           #11                 // String resultMultiply =
+     104: invokevirtual #6                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     107: iload         5
+     109: invokevirtual #7                  // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     112: invokevirtual #8                  // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     115: invokevirtual #9                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     118: iload_1
+     119: iload_2
+     120: idiv                              // 执行 int 类型的除法（同加法分析过程）
+     121: istore        6
+     123: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+     126: new           #3                  // class java/lang/StringBuilder
+     129: dup
+     130: invokespecial #4                  // Method java/lang/StringBuilder."<init>":()V
+     133: ldc           #12                 // String resultDivide =
+     135: invokevirtual #6                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     138: iload         6
+     140: invokevirtual #7                  // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     143: invokevirtual #8                  // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     146: invokevirtual #9                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     149: return                            // 从方法中返回，返回值为 void
+}
