@@ -1,0 +1,59 @@
+不同 GC 和堆内存总结：
+1、串行 Serial
+执行命令：
+	java -Xms512m -Xmx512m -XX:+UseSerialGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps GCLogAnalysis
+运行结果：
+	堆内存配置 512m，YoungGC 16次 平均耗时：39.4ms，FullGC 1次 平均耗时：60ms，平均暂停时间：37.1ms，吞吐量 27.503%
+
+执行命令：
+	java -Xms1g -Xmx1g -XX:+UseSerialGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps GCLogAnalysis
+运行结果：
+	堆内存配置 1g，YoungGC 12次 平均耗时：44.2ms，FullGC 0次 平均耗时：无，平均暂停时间：44.2ms，吞吐量 39.22%
+
+
+
+2、Parallel 并行
+执行命令：
+	java -Xms512m -Xmx512m -XX:+UseParallelGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps GCLogAnalysis
+运行结果：
+	堆内存配置 512m，YoungGC 30次 平均耗时：10ms，FullGC 7次 平均耗时：37.1ms，平均暂停时间：15.1ms，吞吐量 36.795%
+
+执行命令：
+	java -Xms1g -Xmx1g -XX:+UseParallelGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps GCLogAnalysis
+运行结果：
+	堆内存配置 1g，YoungGC 22次 平均耗时：16.8ms，FullGC 2次 平均耗时：50ms，平均暂停时间：19.6ms，吞吐量 46.652%
+
+
+
+3、CMS
+执行命令：
+	java -Xms512m -Xmx512m -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps GCLogAnalysis
+运行结果：
+	堆内存配置 512m，YoungGC 20次 平均耗时：33ms，FullGC 2次 平均耗时：55ms，平均暂停时间：19.7ms，吞吐量 35.845%
+
+执行命令：
+	java -Xms1g -Xmx1g -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+PrintGCDateStamps GCLogAnalysis
+运行结果：
+	堆内存配置 1g，YoungGC 15次 平均耗时：25.3ms，FullGC 1次 平均耗时：60ms，平均暂停时间：22.8ms，吞吐量 51.364%
+
+
+
+4、G1
+执行命令：
+	java -Xms512m -Xmx512m -XX:+UseG1GC -XX:+PrintGC -XX:+PrintGCDateStamps GCLogAnalysis
+运行结果：
+	堆内存配置 512m，GC 84次 平均耗时：2.26ms，平均暂停时间：3.04ms，吞吐量 65.957%
+
+执行命令：
+	java -Xms1g -Xmx1g -XX:+UseG1GC -XX:+PrintGC -XX:+PrintGCDateStamps GCLogAnalysis
+运行结果：
+	堆内存配置 1g，GC 26次 平均耗时：5.78ms，平均暂停时间：7.34ms，吞吐量 76.356%
+
+
+总结：
+	1、串行 GC 的平均耗时无论是 YoungGC 还是 FullGC 都明显比较长，基本是并行的几倍时间；
+	2、CMS 在吞吐量方面并没有表现出明显的优势，甚至在 512m 的情况下，吞吐量比 Parallel 还要低，主要用于老年代垃圾回收，最常搭配 ParNew 一起使用；
+	3、相同内存情况下，串行 GC 无论是耗时还是吞吐量都是最差的，G1 最优，在对比中优势比较明显，不需要搭配其他收集器，可单独回收整个堆内存空间，主要应用于多核和大内存的情况下；
+	4、几种 GC 随着分配的堆内存越来越大，内存中可容纳的对象就会越多，因此 GC 次数会越来越少，吞吐量也会随之上升；
+	5、生产环境中，很多的系统都是使用的 ParNew/CMS 组合，但是关于堆内存，并不是说越大越好，内存越大虽然会相应的降低 GC 的次数，但同样会带来每次 GC 耗时越来越长的问题，如果遇到内存很大的情况，可以考虑换用 G1 收集器；
+	6、关于 YoungGC ，可以尝试调整年轻代大小，来优化系统吞吐量，比如一个 C 端接口，调用量比较大，业务场景更需要的是每分钟可以处理更多的请求，这时候可以尝试适当的调大年轻代大小来降低 YoungGC 的频次，提高系统吞吐量。
