@@ -1,0 +1,47 @@
+百万数据量太大，因此以十万数据为基数测试
+
+1、for 循环（380s）
+long start = System.currentTimeMillis();
+for(int i = 0 ;i < 100000; i++) {
+    User user = new User();
+    user.setId(i);
+    user.setUName("name" + i);
+    user.setUPassword("password" + i);
+    user.setUPhone("phone" + i);
+    userMapper.insert(user);
+}
+long end = System.currentTimeMillis();
+System.out.println("costTime:" + (start - end)/1000);
+
+2、Mybatis batch（203s）
+SqlSession sqlSession = sqlSessionTemplate.getSqlSessionFactory().openSession(ExecutorType.BATCH, false);
+UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+
+long start = System.currentTimeMillis();
+for (int i = 0; i < 100000; i++) {
+    User user = new User();
+    user.setId(i);
+    user.setUName("name" + i);
+    user.setUPassword("password" + i);
+    user.setUPhone("phone" + i);
+    userMapper.insert(user);
+}
+
+sqlSession.commit();
+long end = System.currentTimeMillis();
+System.out.println("costTime:" + (start - end)/1000);
+
+3、foreach（8s）
+long start = System.currentTimeMillis();
+List<User> userList = new ArrayList<>();
+for (int i = 0; i < 100000; i++) {
+    User user = new User();
+    user.setId(i);
+    user.setUName("name" + i);
+    user.setUPassword("password" + i);
+    user.setUPhone("phone" + i);
+    userMapper.insert(user);
+}
+userMapper.insertBatch(userList);
+long end = System.currentTimeMillis();
+System.out.println("costTime:" + (start - end)/1000);
